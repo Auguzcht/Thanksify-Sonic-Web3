@@ -39,7 +39,7 @@ Thanksify is a backend-focused Web3 testbed built on the Sonic platform, designe
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/thanksify.git
+   https://github.com/Auguzcht/Thanksify-Sonic-Web3.git
    cd thanksify
    ```
 
