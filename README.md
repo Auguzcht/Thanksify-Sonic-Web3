@@ -1,4 +1,4 @@
-# 🌟 Thanksify
+# 🪙 Thanksify
 
 ## A Web3 Experimental Platform Built on Sonic
 
