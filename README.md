@@ -87,69 +87,119 @@ Thanksify is a backend-focused Web3 testbed built on the Sonic platform, designe
    ```
    This creates a unique deployer address and saves the mnemonic locally.
 
-3. **Fund your deployer address**:
-   Send testnet tokens to your deployer address using a faucet
+> This local account will deploy your contracts, allowing you to avoid entering a personal private key.
 
-4. **Deploy to the Sonic testnet**:
-   ```bash
-   npm run deploy --network sonic
-   ```
+![chall-0-yarn-generate](https://github.com/scaffold-eth/se-2-challenges/assets/2486142/133f5701-e575-4cc2-904f-cdc83ae86d94)
 
-5. **Verify your contract** (if applicable):
-   ```bash
-   npm run verify --network sonic
-   ```
+👩‍🚀 Use `yarn account` to view your deployer account balances.
 
-## 🔍 Debug and Testing
+![chall-0-yarn-account](https://github.com/scaffold-eth/se-2-challenges/assets/2486142/c34df8c9-9793-4a76-849b-170fae7fd0f0)
 
-### Local Testing with Burner Wallets
+⛽️ You will need to send ETH to your deployer address with your wallet, or get it from a public faucet of your chosen network.
 
-For local development, you can use burner wallets to test your application:
+> Some popular Sepolia faucets are the [Alchemy Faucet](https://sepoliafaucet.com/), [Infura Faucet](https://www.infura.io/faucet/sepolia), and [Google Cloud Faucet](https://cloud.google.com/application/web3/faucet/ethereum/sepolia).
 
-1. Run your local chain and deploy contracts
-2. Open a new incognito window to automatically generate a new burner wallet
-3. Use the local faucet to fund the burner wallet
-4. Test minting and transfers between different addresses
+> ⚔️ Side Quest: Keep a 🧑‍🎤 [punkwallet.io](https://punkwallet.io) on your phone's home screen and keep it loaded with testnet eth. 🧙‍♂️ You'll look like a wizard when you can fund your deployer address from your phone in seconds.
 
-### Contract Verification
+🚀 Deploy your NFT smart contract with `yarn deploy`.
 
-After deploying to a public testnet, verify your contract to allow others to interact with it:
+> 💬 Hint: You can set the `defaultNetwork` in `hardhat.config.ts` to `sepolia` **OR** you can `yarn deploy --network sepolia`.
 
-```bash
-npm run verify --network sonic
+---
+
+## Checkpoint 4: 🚢 Ship your frontend! 🚁
+
+> ✏️ Edit your frontend config in `packages/nextjs/scaffold.config.ts` to change the `targetNetwork` to `chains.sepolia` :
+
+![chall-0-scaffold-config](https://github.com/scaffold-eth/se-2-challenges/assets/12072395/ff03bda0-66c6-4907-a9ad-bc8587da8036)
+
+> You should see the correct network in the frontend (http://localhost:3000):
+
+![image](https://github.com/scaffold-eth/se-2-challenges/assets/80153681/50eef1f7-e1a3-4b3b-87e2-59c19362c4ff)
+
+> 🦊 Since we have deployed to a public testnet, you will now need to connect using a wallet you own or use a burner wallet. By default 🔥 `burner wallets` are only available on `hardhat` . You can enable them on every chain by setting `onlyLocalBurnerWallet: false` in your frontend config (`scaffold.config.ts` in `packages/nextjs/`).
+
+![image](https://github.com/scaffold-eth/se-2-challenges/assets/80153681/f582d311-9b57-4503-8143-bac60346ea33)
+
+> 💬 Hint: For faster loading of your transfer page, consider updating the `fromBlock` passed to `useScaffoldEventHistory` in `packages/nextjs/app/transfers/page.tsx` to `blocknumber - 10` at which your contract was deployed. Example: `fromBlock: 3750241n` (where `n` represents its a [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)). To find this blocknumber, search your contract's address on Etherscan and find the `Contract Creation` transaction line.
+
+🚀 Deploy your NextJS App
+
+```
+yarn vercel
 ```
 
-## 📚 Documentation
+> You might need to log in to Vercel first by running `yarn vercel:login`. Once you log in (email, GitHub, etc), the default options should work.
 
-For more detailed information, check out these resources:
-- [Sonic Platform Documentation](https://docs.sonic.com)
-- [Hardhat Tutorials](https://hardhat.org/tutorial)
-- [Solidity Documentation](https://docs.soliditylang.org/)
+> If you want to redeploy to the same production URL you can run `yarn vercel --prod`. If you omit the `--prod` flag it will deploy it to a preview/test URL.
 
-## 🔄 Contribution Guidelines
+> Follow the steps to deploy to Vercel. It'll give you a public URL.
 
-Contributions are welcome! Please follow these steps:
+⚠️ Run the automated testing function to make sure your app passes
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+```
+yarn test
+```
 
-## ⚠️ Important Notes
+#### Configuration of Third-Party Services for Production-Grade Apps.
 
-- This project is experimental and intended for educational purposes
-- When deploying to production, obtain your own API keys for any third-party services
-- For local testing, use burner wallets rather than connecting your primary wallets
-- Always verify your contracts on the blockchain explorer after deployment
+By default, 🏗 Scaffold-ETH 2 provides predefined API keys for popular services such as Alchemy and Etherscan. This allows you to begin developing and testing your applications more easily, avoiding the need to register for these services.
+This is great to complete your **SpeedRunEthereum**.
 
-## 📄 License
+For production-grade applications, it's recommended to obtain your own API keys (to prevent rate limiting issues). You can configure these at:
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+- 🔷 `ALCHEMY_API_KEY` variable in `packages/hardhat/.env` and `packages/nextjs/.env.local`. You can create API keys from the [Alchemy dashboard](https://dashboard.alchemy.com/).
 
-## 🙌 Acknowledgements
+- 📃 `ETHERSCAN_API_KEY` variable in `packages/hardhat/.env` with your generated API key. You can get your key [here](https://etherscan.io/myapikey).
 
-- **BitSkwela** – For empowering blockchain education and supporting local dev talent
-- **Sonic** – For providing a blazing-fast platform for Web3 experimentation and deployment
-- **Ethereum Community** – For continuous innovation in the Web3 space
-- **Scaffold-ETH** – For inspiration on Web3 development patterns and practices
+> 💬 Hint: It's recommended to store env's for nextjs in Vercel/system env config for live apps and use .env.local for local testing.
+
+---
+
+## Checkpoint 5: 📜 Contract Verification
+
+You can verify your smart contract on Etherscan by running (`yarn verify --network network_name`) :
+
+```
+yarn verify --network sepolia
+```
+
+> It is okay if it says your contract is already verified. Copy the address of YourCollectable.sol and search it on sepolia Etherscan to find the correct URL you need to submit this challenge.
+
+## Checkpoint 6: 💪 Flex!
+
+👩‍❤️‍👨 Share your public url with a friend and ask them for their address to send them a collectible :)
+
+![gif](https://github.com/scaffold-eth/se-2-challenges/assets/80153681/547612f6-97b9-4eb3-ab6d-9b6d2c0ac769)
+
+## ⚔️ Side Quests
+
+### 🐟 Open Sea
+
+> 🐃 Want to see your new NFTs on Opensea? Head to [Testnets Opensea](https://testnets.opensea.io/)
+
+> 🎫 Make sure you have minted some NFTs on your Vercel page, then connect to Opensea using that same wallet.
+
+![image](https://github.com/scaffold-eth/se-2-challenges/assets/80153681/c752b365-b801-4a02-ba2e-62e0270b3795)
+
+> You can see your collection of shiny new NFTs on a testnet!
+
+(It can take a while before they show up, but here is an example:) https://testnets.opensea.io/assets/sepolia/0x17ed03686653917efa2194a5252c5f0a4f3dc49c/2
+
+---
+
+> 🏃 Head to your next challenge [here](https://github.com/scaffold-eth/se-2-challenges).
+
+> 💬 Problems, questions, comments on the stack? Post them to the [🏗 scaffold-eth developers chat](https://t.me/joinchat/F7nCRK3kI93PoCOk)
+
+## Documentation
+
+Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
+
+To know more about its features, check out our [website](https://scaffoldeth.io).
+
+## Contributing to Scaffold-ETH 2
+
+We welcome contributions to Scaffold-ETH 2!
+
+Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
